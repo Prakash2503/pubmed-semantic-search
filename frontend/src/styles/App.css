@@ -1,0 +1,175 @@
+/* --- Global Styles & Modern Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root {
+  /* --- Light Theme Palette --- */
+  --bg-color-start: #e0e7ff;
+  --bg-color-end: #f3e8ff;
+  --primary-text-color: #1f2937;
+  --secondary-text-color: #4b5563;
+  --glass-bg-color: rgba(255, 255, 255, 0.6);
+  --glass-border-color: rgba(224, 231, 255, 0.8);
+  --primary-brand-color: #6d28d9;
+  --primary-brand-gradient: linear-gradient(90deg, #6d28d9, #be185d);
+  --primary-brand-hover: linear-gradient(90deg, #5b21b6, #9d174d);
+  --error-bg-color: rgba(239, 68, 68, 0.1);
+  --error-text-color: #b91c1c;
+  --shadow-color: rgba(67, 56, 202, 0.1);
+}
+
+/* --- Keyframe Animations --- */
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes text-shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+
+/* --- Base Layout & Typography --- */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(120deg, var(--bg-color-start), var(--bg-color-end));
+  background-size: 200% 200%;
+  animation: aurora 15s ease infinite;
+  color: var(--primary-text-color);
+}
+
+.app-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.app-header h1 {
+  font-size: 3.2em;
+  font-weight: 800;
+  background: var(--primary-brand-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 4s linear infinite;
+}
+
+.app-header p {
+  font-size: 1.2em;
+  color: var(--secondary-text-color);
+  margin-top: 8px;
+}
+
+/* --- Search & Form Elements --- */
+.search-bar-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+  background: var(--glass-bg-color);
+  border-radius: 16px;
+  padding: 8px;
+  border: 1px solid var(--glass-border-color);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 var(--shadow-color);
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 14px 18px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--primary-text-color);
+}
+
+.search-input::placeholder {
+  color: var(--secondary-text-color);
+}
+
+.search-input:focus {
+  outline: 2px solid var(--primary-brand-color);
+}
+
+.search-button {
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary-brand-gradient);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-button:hover:not(:disabled) {
+  background: var(--primary-brand-hover);
+  transform: scale(1.05);
+}
+
+/* --- Toggle Buttons --- */
+.search-mode-toggle, .view-mode-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  background: var(--glass-bg-color);
+  border: 1px solid var(--glass-border-color);
+  border-radius: 12px;
+  padding: 5px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-mode-toggle button, .view-mode-toggle button {
+  background: transparent;
+  border: none;
+  color: var(--secondary-text-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.search-mode-toggle button.active, .view-mode-toggle button.active {
+  background: var(--primary-brand-gradient);
+  color: #fff;
+}
+
+/* --- Graph Container --- */
+.graph-container {
+  width: 100%;
+  height: 600px;
+  background: var(--glass-bg-color);
+  border: 1px solid var(--glass-border-color);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 var(--shadow-color);
+  margin-top: 20px;
+}
+
+/* --- Helper Components (Spinner, Messages, etc.) --- */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--primary-brand-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 40px auto;
+}
+
+.error-message {
+  color: var(--error-text-color);
+  background-color: var(--error-bg-color);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.info-message {
+  text-align: center;
+  padding: 20px;
+  color: var(--secondary-text-color);
+}

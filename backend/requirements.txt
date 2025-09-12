@@ -1,0 +1,11 @@
+# Python dependencies for the FastAPI backend
+fastapi
+uvicorn[standard]
+google-generativeai  # Use Gemini API for all tasks
+faiss-cpu
+requests
+python-dotenv
+pydantic-settings
+tenacity
+httpx
+numpy
