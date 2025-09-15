@@ -4,67 +4,98 @@ import ForceGraph2D from 'react-force-graph-2d';
 const KnowledgeGraph = ({ graphData }) => {
   const fgRef = useRef();
 
-  // Custom function to draw nodes and their labels on the canvas
+  // Custom function to draw nodes and labels
   const handleNodeCanvasObject = (node, ctx, globalScale) => {
     const label = node.label;
-    const fontSize = 12 / globalScale; // Font size adjusts with zoom
+    const fontSize = 12 / globalScale;
     ctx.font = `${fontSize}px Sans-Serif`;
 
     // Draw the node circle
     ctx.beginPath();
-    ctx.arc(node.x, node.y, 5, 0, 2 * Math.PI, false);
-    ctx.fillStyle = node.color || 'lightblue'; // Use color from graph data or a default
+    ctx.arc(node.x, node.y, 6, 0, 2 * Math.PI, false);
+    ctx.fillStyle = node.color || 'lightblue';
     ctx.fill();
 
-    // Draw the node label
+    // Draw the label
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.textBaseline = 'top';
     ctx.fillStyle = 'black';
-    ctx.fillText(label, node.x, node.y + 10); // Position label below the node
+    ctx.fillText(label, node.x, node.y + 8);
   };
 
-  // --- UPDATED CLICK HANDLER WITH CORRECT 2D METHODS ---
-  const handleNodeClick = useCallback(node => {
-    // Check if the node has a valid URL property
-    if (node.url && (node.url.startsWith('http://') || node.url.startsWith('https://'))) {
-      // Open the URL in a new browser tab
-      window.open(node.url, '_blank');
-    } else {
-      // If no valid URL, zoom in on the node using 2D canvas methods
-      if (fgRef.current) {
-        // Pan to the node's position
-        fgRef.current.centerAt(node.x, node.y, 1000); // 1000ms transition
-        // Zoom in to a fixed level (e.g., scale of 4)
-        fgRef.current.zoom(4, 1000); // 1000ms transition
+  // Node click: open URL or zoom
+  const handleNodeClick = useCallback(
+    (node) => {
+      if (node.url && (node.url.startsWith('http://') || node.url.startsWith('https://'))) {
+        window.open(node.url, '_blank');
+      } else {
+        if (fgRef.current) {
+          fgRef.current.centerAt(node.x, node.y, 1000);
+          fgRef.current.zoom(4, 1000);
+        }
       }
-    }
-  }, [fgRef]);
+    },
+    [fgRef]
+  );
 
-  // Render a message if there's no graph data
   if (!graphData || !graphData.nodes || graphData.nodes.length === 0) {
     return <div className="info-message">No graph data could be generated for this query.</div>;
   }
 
-  // Render the graph component
+  // Example legend mapping (adjust groups/colors as per your data)
+  const legendItems = [
+    { color: 'lightblue', label: 'Default / Drug' },
+    { color: 'lightgreen', label: 'Treatment' },
+    { color: 'lightcoral', label: 'Disease Risk' },
+    { color: 'darkblue', label: 'Disease' },
+    { color: 'green', label: 'Receptor / Mechanism' }
+  ];
+
   return (
-    <div className="graph-container">
+    <div style={{ position: 'relative' }}>
+      {/* Graph */}
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
-        
-        // --- Component Properties ---
         nodeCanvasObject={handleNodeCanvasObject}
         nodeVal={8}
         nodeAutoColorBy="group"
-        
-        linkDirectionalArrowLength={3.5}
+        linkDirectionalArrowLength={6} // Bigger arrows
         linkDirectionalArrowRelPos={1}
         linkLabel="label"
         linkWidth={1}
-        
-        // Assign our updated click handler
         onNodeClick={handleNodeClick}
       />
+
+      {/* Legend */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          background: 'rgba(255,255,255,0.85)',
+          padding: '10px',
+          borderRadius: '8px',
+          fontSize: '12px',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+        }}
+      >
+        <strong>Legend</strong>
+        {legendItems.map((item, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', marginTop: '4px' }}>
+            <div
+              style={{
+                width: '12px',
+                height: '12px',
+                background: item.color,
+                borderRadius: '50%',
+                marginRight: '6px'
+              }}
+            />
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
